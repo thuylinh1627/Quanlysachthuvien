@@ -1,0 +1,298 @@
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Lop Sach
+class Sach
+{
+private:
+    string maSach;
+    string tenSach;
+    string tacGia;
+    string theLoai;
+    int namXuatBan;
+    int soLuong;
+
+public:
+    Sach()
+    {
+        maSach = "";
+        tenSach = "";
+        tacGia = "";
+        theLoai = "";
+        namXuatBan = 0;
+        soLuong = 0;
+    }
+
+    void nhap()
+    {
+        cout << "Nhap ma sach: ";
+        getline(cin, maSach);
+
+        cout << "Nhap ten sach: ";
+        getline(cin, tenSach);
+
+        cout << "Nhap tac gia: ";
+        getline(cin, tacGia);
+
+        cout << "Nhap the loai: ";
+        getline(cin, theLoai);
+
+        cout << "Nhap nam xuat ban: ";
+        cin >> namXuatBan;
+
+        cout << "Nhap so luong: ";
+        cin >> soLuong;
+        cin.ignore(1000, '\n');
+    }
+
+    void xuat()
+    {
+        cout << "Ma sach: " << maSach << endl;
+        cout << "Ten sach: " << tenSach << endl;
+        cout << "Tac gia: " << tacGia << endl;
+        cout << "The loai: " << theLoai << endl;
+        cout << "Nam xuat ban: " << namXuatBan << endl;
+        cout << "So luong: " << soLuong << endl;
+    }
+
+    void capNhat()
+    {
+        cout << "Nhap ten sach moi: ";
+        getline(cin, tenSach);
+
+        cout << "Nhap tac gia moi: ";
+        getline(cin, tacGia);
+
+        cout << "Nhap the loai moi: ";
+        getline(cin, theLoai);
+
+        cout << "Nhap nam xuat ban moi: ";
+        cin >> namXuatBan;
+
+        cout << "Nhap so luong moi: ";
+        cin >> soLuong;
+        cin.ignore(1000, '\n');
+
+        cout << "Cap nhat thanh cong!" << endl;
+    }
+
+    string getMaSach()
+    {
+        return maSach;
+    }
+
+    string getTenSach()
+    {
+        return tenSach;
+    }
+};
+
+// Lop QuanLySach
+class QuanLySach
+{
+private:
+    Sach danhSach[100];
+    int soLuongSach;
+
+public:
+    QuanLySach()
+    {
+        soLuongSach = 0;
+    }
+
+    void themSach()
+    {
+        if (soLuongSach >= 100)
+        {
+            cout << "Danh sach da day!" << endl;
+            return;
+        }
+
+        Sach s;
+        s.nhap();
+
+        for (int i = 0; i < soLuongSach; i++)
+        {
+            if (danhSach[i].getMaSach() == s.getMaSach())
+            {
+                cout << "Ma sach da ton tai!" << endl;
+                return;
+            }
+        }
+
+        danhSach[soLuongSach] = s;
+        soLuongSach++;
+
+        cout << "Them sach thanh cong!" << endl;
+    }
+
+    void hienThiDanhSach()
+    {
+        if (soLuongSach == 0)
+        {
+            cout << "Danh sach sach rong!" << endl;
+            return;
+        }
+
+        for (int i = 0; i < soLuongSach; i++)
+        {
+            cout << "\n--- SACH THU " << i + 1 << " ---" << endl;
+            danhSach[i].xuat();
+        }
+    }
+
+    void timSachTheoMa()
+    {
+        string ma;
+        bool timThay = false;
+
+        cout << "Nhap ma sach can tim: ";
+        getline(cin, ma);
+
+        for (int i = 0; i < soLuongSach; i++)
+        {
+            if (danhSach[i].getMaSach() == ma)
+            {
+                danhSach[i].xuat();
+                timThay = true;
+            }
+        }
+
+        if (!timThay)
+            cout << "Khong tim thay sach!" << endl;
+    }
+
+    void timSachTheoTen()
+    {
+        string ten;
+        bool timThay = false;
+
+        cout << "Nhap ten sach can tim: ";
+        getline(cin, ten);
+
+        for (int i = 0; i < soLuongSach; i++)
+        {
+            if (danhSach[i].getTenSach().find(ten) != string::npos)
+            {
+                danhSach[i].xuat();
+                timThay = true;
+            }
+        }
+
+        if (!timThay)
+            cout << "Khong tim thay sach!" << endl;
+    }
+
+    void capNhatSach()
+    {
+        string ma;
+
+        cout << "Nhap ma sach can cap nhat: ";
+        getline(cin, ma);
+
+        for (int i = 0; i < soLuongSach; i++)
+        {
+            if (danhSach[i].getMaSach() == ma)
+            {
+                danhSach[i].capNhat();
+                return;
+            }
+        }
+
+        cout << "Khong tim thay sach!" << endl;
+    }
+
+    void xoaSach()
+    {
+        string ma;
+
+        cout << "Nhap ma sach can xoa: ";
+        getline(cin, ma);
+
+        for (int i = 0; i < soLuongSach; i++)
+        {
+            if (danhSach[i].getMaSach() == ma)
+            {
+                for (int j = i; j < soLuongSach - 1; j++)
+                {
+                    danhSach[j] = danhSach[j + 1];
+                }
+
+                soLuongSach--;
+                cout << "Xoa sach thanh cong!" << endl;
+                return;
+            }
+        }
+
+        cout << "Khong tim thay sach!" << endl;
+    }
+};
+
+// Ham main
+int main()
+{
+    QuanLySach qls;
+    int luaChon;
+
+    do
+    {
+        cout << "\n===== QUAN LY SACH THU VIEN =====" << endl;
+        cout << "1. Them sach" << endl;
+        cout << "2. Hien thi danh sach sach" << endl;
+        cout << "3. Tim sach theo ma" << endl;
+        cout << "4. Tim sach theo ten" << endl;
+        cout << "5. Cap nhat thong tin sach" << endl;
+        cout << "6. Xoa sach" << endl;
+        cout << "0. Thoat" << endl;
+        cout << "Nhap lua chon: ";
+
+        if (!(cin >> luaChon))
+        {
+            cout << "Vui long nhap so!" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+            continue;
+        }
+
+        cin.ignore(1000, '\n');
+
+        switch (luaChon)
+        {
+        case 1:
+            qls.themSach();
+            break;
+
+        case 2:
+            qls.hienThiDanhSach();
+            break;
+
+        case 3:
+            qls.timSachTheoMa();
+            break;
+
+        case 4:
+            qls.timSachTheoTen();
+            break;
+
+        case 5:
+            qls.capNhatSach();
+            break;
+
+        case 6:
+            qls.xoaSach();
+            break;
+
+        case 0:
+            cout << "Ket thuc chuong trinh!" << endl;
+            break;
+
+        default:
+            cout << "Lua chon khong hop le!" << endl;
+        }
+
+    } while (luaChon != 0);
+
+    return 0;
+}
